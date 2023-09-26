@@ -1,5 +1,5 @@
 import os
-
+# import sqlalchemy
 from cs50 import SQL
 from flask import Flask, flash, redirect, render_template, request, session
 from flask_session import Session
@@ -345,4 +345,4 @@ def sell():
     # return apology("TODO")
 
 if __name__ == "__main__":
-    app.run(debug=False)
+    app.run(debug=True)

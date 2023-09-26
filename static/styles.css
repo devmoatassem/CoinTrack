@@ -31,3 +31,80 @@ nav .navbar-brand .green
     padding: 50px 10% 0 10% ;
 
 }
+
+.main {
+    background: url(wp2446260.webp) no-repeat center;
+    /* background-color: rgb(225, 233, 233); */
+    background-size: cover;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    -ms-background-size: cover;
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.center-container{
+    display: flex;
+    justify-content: center !important;
+    align-items: center !important;
+    height: 100%; 
+    width: 100%;
+    
+}
+.card{
+    backdrop-filter: blur(7px) saturate(200%);
+    -webkit-backdrop-filter: blur(7px) saturate(200%);
+    background-color: rgba(255, 255, 255, 0.53);
+    border-radius: 12px;
+    border: 1px solid rgba(209, 213, 219, 0.3);
+    padding: 3% 3% 3% 3%;
+    
+    
+}
+h2 p {
+    color: #212529;
+}
+a{
+    color: #212529;
+    font-weight: bold;
+}
+.w-auto{
+    min-width: 300px !important;
+}
+.form-control{
+    border-radius: 10px;
+    background-color: transparent;
+    color: white;
+    border-color: #212529;
+}
+.btn{
+    border-radius: 10px;
+    min-width: 100px;
+
+}
+.form-control:focus {
+    box-shadow: 0 0 0 0.2rem #212529; /* Replace with your desired shadow color */
+    border-color:#212529;
+}
+input::placeholder,
+textarea::placeholder {
+    color: #212529 !important; /* Replace with your desired color */
+}
+
+
+input:focus {
+    background-color: transparent !important; /* Replace with your desired background color */
+}
+
+#addon-wrapping{
+    width: 40px;
+    background-color: transparent;
+    border-color: #212529;
+    /* border-radius: 10px; */
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}

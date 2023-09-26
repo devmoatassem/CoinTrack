@@ -4,18 +4,40 @@
     Register
 {% endblock %}
 
-{% block main %}
-    <form action="/register" method="post">
-        <div class="mb-3">
-            <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="username" name="username" placeholder="Username" type="text">
-        </div>
-        <div class="mb-3">
-            <input class="form-control mx-auto w-auto" id="password" name="password" placeholder="Password" type="password">
+{% block front %}
+<div class="center-container">
+    <div class="card">
+        <h3>Register</h3>
+        <p>Register with your email.</p>
+        <form action="/register" method="post">
+        
+            <div class="mb-3 input-group flex-nowrap">
+                <span class="input-group-text" id="addon-wrapping"><i class="fa fa-id-card"></i></span>
+                <input   class="form-control mx-auto w-auto" id="name" name="name" placeholder="Full Name" type="text">
+            </div>
+            <div class="mb-3 input-group flex-nowrap">
+                <span class="input-group-text" id="addon-wrapping"><i class="fa fa-user"></i></span>
+                <input autocomplete="off"  class="form-control mx-auto w-auto" id="username" name="username" placeholder="Username" type="text">
+            </div>
+            <div class="mb-3 input-group flex-nowrap">
+                <span class="input-group-text" id="addon-wrapping"><i class="fa fa-envelope"></i></span>
+                <input   class="form-control mx-auto w-auto" id="email" name="email" placeholder="Email" type="email">
+            </div>
             
-        </div>
-        <div class="mb-3">
-            <input class="form-control mx-auto w-auto" id="password" name="confirmation" placeholder=" Confirm Password" type="password">
-        </div>
-        <button class="btn btn-primary" type="submit">Register</button>
-    </form>
+            <div class="mb-3 input-group flex-nowrap">
+                <span class="input-group-text" id="addon-wrapping"><i class="fa fa-key"></i></span>
+                <input class="form-control mx-auto w-auto" id="password" name="password" placeholder="Password" type="password">
+            </div>
+            <div class="mb-3 input-group flex-nowrap">
+                <span class="input-group-text" id="addon-wrapping"><i class="fa fa-key"></i></span>
+                <input class="form-control mx-auto w-auto" id="password" name="confirmation" placeholder=" Confirm Password" type="password">
+            </div>
+            <p>Already have an account? <a href="/login">Login Here</a></p>
+            <button class="btn btn-dark" type="submit">Register</button>
+        </form>
+    </div>
+    
+    
+</div>
+    
 {% endblock %}
