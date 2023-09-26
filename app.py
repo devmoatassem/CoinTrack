@@ -41,35 +41,36 @@ def after_request(response):
 
 
 @app.route("/")
-@login_required
+# @login_required
 def index():
-    """Show portfolio of stocks"""
-    # Connection to user-specific database
-    id = session["user_id"]
-    rows = db.execute("SELECT * FROM users WHERE id = ?", id)
-    if len(rows) != 1:
-        session.clear()
-        return redirect("/login")
-    username = rows[0]["username"]
-    userdbcon = SQL(f"sqlite:///user-databases/{id}/{username}.db")
-    # //////////////////////////////////////////////////////////////
-    dashboard = userdbcon.execute("SELECT * FROM dashboard")
-    availablecash = rows[0]["cash"]
-    # print(dashboard)
-    sum_in_stocks = 0
+    return render_template("welcome.html")
+    # """Show portfolio of stocks"""
+    # # Connection to user-specific database
+    # id = session["user_id"]
+    # rows = db.execute("SELECT * FROM users WHERE id = ?", id)
+    # if len(rows) != 1:
+    #     session.clear()
+    #     return redirect("/login")
+    # username = rows[0]["username"]
+    # userdbcon = SQL(f"sqlite:///user-databases/{id}/{username}.db")
+    # # //////////////////////////////////////////////////////////////
+    # dashboard = userdbcon.execute("SELECT * FROM dashboard")
+    # availablecash = rows[0]["cash"]
+    # # print(dashboard)
+    # sum_in_stocks = 0
 
-    for row in dashboard:
-        row["price"] = lookup(row["symbol"])["price"]
-        row["total"] = row["price"] * row["shares"]
-        sum_in_stocks += row["total"]
-    # print(sum_in_stocks)
-    return render_template(
-        "index.html",
-        dashdata=dashboard,
-        currentCash=availablecash,
-        total=availablecash + sum_in_stocks,
-    )
-    # return apology("TODO",200)
+    # for row in dashboard:
+    #     row["price"] = lookup(row["symbol"])["price"]
+    #     row["total"] = row["price"] * row["shares"]
+    #     sum_in_stocks += row["total"]
+    # # print(sum_in_stocks)
+    # return render_template(
+    #     "index.html",
+    #     dashdata=dashboard,
+    #     currentCash=availablecash,
+    #     total=availablecash + sum_in_stocks,
+    # )
+    # 
 
 
 @app.route("/buy", methods=["GET", "POST"])

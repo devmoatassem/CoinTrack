@@ -27,11 +27,22 @@ nav .navbar-brand .green
     margin-left: 20px;
     margin-right: 20px;
 } */
-#centtab{
+/* #centtab{
     padding: 50px 10% 0 10% ;
 
+} */
+
+
+h2 p {
+    color: #212529;
+}
+a{
+    color: #212529;
+    font-weight: bold;
 }
 
+
+/* Sign In and Login Page */
 .main {
     background: url(wp2446260.webp) no-repeat center;
     /* background-color: rgb(225, 233, 233); */
@@ -65,13 +76,7 @@ nav .navbar-brand .green
     
     
 }
-h2 p {
-    color: #212529;
-}
-a{
-    color: #212529;
-    font-weight: bold;
-}
+
 .w-auto{
     min-width: 300px !important;
 }
@@ -84,6 +89,9 @@ a{
 .btn{
     border-radius: 10px;
     min-width: 100px;
+    background: linear-gradient(145deg, #1e2125, #23282c);
+    box-shadow:  29px 29px 59px #15181a,
+             -29px -29px 59px #2d3238;
 
 }
 .form-control:focus {
@@ -108,3 +116,7 @@ input:focus {
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
 }
+
+
+/* /////////////////////////////////////////////////// */
+
