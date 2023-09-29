@@ -55,23 +55,7 @@ def register():
 
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
-        # Ensure username was submitted
-        if not request.form.get("username"):
-            return apology("Please Provide a username", 400)
-        
-        # Ensure password was submitted
-        elif not request.form.get("password") or not request.form.get("confirmation"):
-            return apology("must provide password", 400)
 
-        elif request.form.get("password") != request.form.get("confirmation"):
-            return apology("Passwords Do not Match", 400)
-
-        elif not request.form.get("name"):
-            return apology("Please Provide a Name", 400)
-        elif not request.form.get("email"):
-            return apology("Please Provide an Email", 400)
-        
-        
         # Getting data into variables
         name = request.form.get("name")
         username = request.form.get("username")
@@ -84,7 +68,7 @@ def register():
         cursor.execute("SELECT * FROM users WHERE username = ?", username)
         rows_pass = cursor.fetchall()
         if len(rows_pass) != 0:
-            return apology("Username Already Taken", 400)
+            return render_template("register.html", message="Username already exists")  
         
         # Inserting data into database
         cursor.execute("INSERT INTO users (name, username, email, hash) VALUES (?,?,?,?)",name, username, email, generate_password_hash(password))
@@ -106,7 +90,7 @@ def register():
             u_cursor.commit()
             user_conn.close()
         else:
-            return apology("Database Creation Failed", 400)
+            return render_template("register.html", message="Something went wrong. Please try again later.")
 
         # Redirect user to home page
         return redirect("/")

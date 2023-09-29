@@ -5,11 +5,19 @@
 {% endblock %}
 
 {% block front %}
+ {% if message %}
+    
+        <script>
+            alert("{{ message | safe }}");
+        </script>
+
+{% endif %}
+
 <div class="center-container">
     <div class="card">
         <h3>Register</h3>
         <p>Register with your email.</p>
-        <form action="/register" method="post">
+        <form action="/register" method="post" id="registration-form">
         
             <div class="mb-3 input-group flex-nowrap">
                 <span class="input-group-text" id="addon-wrapping"><i class="fa fa-id-card"></i></span>
@@ -30,7 +38,7 @@
             </div>
             <div class="mb-3 input-group flex-nowrap">
                 <span class="input-group-text" id="addon-wrapping"><i class="fa fa-key"></i></span>
-                <input class="form-control mx-auto w-auto" id="password" name="confirmation" placeholder=" Confirm Password" type="password">
+                <input class="form-control mx-auto w-auto" id="confirmation" name="confirmation" placeholder=" Confirm Password" type="password">
             </div>
             <p>Already have an account? <a href="/login">Login Here</a></p>
             <button class="btn btn-dark" type="submit">Register</button>
