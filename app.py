@@ -4,7 +4,7 @@ from flask import Flask, flash, redirect, render_template, request, session
 from flask_session import Session
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from helpers import login_required,  pkr,  get_time_stamp, create_db
+from helpers import login_required,  pkr,  get_time_stamp, create_db, querry_table, extract_date_info
 
 
 # Configure application
@@ -101,7 +101,8 @@ def register():
             user_conn = sqlite3.connect(f"../Database/user-databases/{id}/{username}.db")
             u_cursor = user_conn.cursor()
             u_cursor.execute("CREATE TABLE IF NOT EXISTS transactions (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, day INTEGER NOT NULL, month INTEGER NOT NULL, year INTEGER NOT NULL, description TEXT NOT NULL, received NUMERIC NOT NULL DEFAULT 0.00, paid NUMERIC NOT NULL DEFAULT 0.00, category TEXT NOT NULL)")
-            u_cursor.commit()
+            u_cursor.execute("CREATE TABLE IF NOT EXISTS ledger (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT NOT NULL)")
+            user_conn.commit()
             user_conn.close()
         else:
             return render_template("register.html", message="Something went wrong. Please try again later.")
@@ -136,7 +137,7 @@ def login():
         cursor.execute("SELECT * FROM users WHERE username = ?", (username,))
         rows = cursor.fetchall()
         auth_conn.close()
-        # print(rows[0][0])
+        
         # Ensure username exists and password is correct
         if len(rows) != 1 or not check_password_hash(rows[0][4], password):
             return render_template("login.html", message="Invalid username and/or password")
@@ -161,14 +162,55 @@ def logout():
     # Redirect user to login form
     return redirect("/login")
 
+
 @app.route("/table", methods=["GET", "POST"])
 @login_required
 def table():
     if request.method == "POST":
-        return redirect("/dashboard")
-    else:
         return render_template("table.html")
+    else:
+        
+        transaction = querry_table("../Database/user-databases",session["uid"],session["username"],"transactions")
+        ledger_list = querry_table("../Database/user-databases",session["uid"],session["username"],"ledger")
+        return render_template("table.html",transactions = transaction , ledger_list = ledger_list)
     
+
+
+@app.route("/addLedger", methods=["GET", "POST"])
+@login_required
+def addLedger():
+    if request.method == "POST":
+        ledger_name = request.form.get("ledger_name")
+        user_conn = sqlite3.connect(f"../Database/user-databases/{session['uid']}/{session['username']}.db")
+        u_cursor = user_conn.cursor()
+        u_cursor.execute("INSERT INTO ledger (name) VALUES (?)",(ledger_name,))
+        user_conn.commit()
+        user_conn.close()
+        return redirect("/table")
+    else:
+        return render_template("table.html",message="Can't add ledger.")
+    
+
+@app.route("/addTransaction", methods=["GET", "POST"])
+@login_required
+def addTransaction():
+    if request.method == "POST":
+        date = request.form.get("date")
+        print(date)
+        day, year, month = extract_date_info(request.form.get("date"))
+        description = request.form.get("description")
+        received = request.form.get("received")
+        paid = request.form.get("paid")
+        category = request.form.get("category")
+        user_conn = sqlite3.connect(f"../Database/user-databases/{session['uid']}/{session['username']}.db")
+        u_cursor = user_conn.cursor()
+        u_cursor.execute("INSERT INTO transactions (day, month, year, description, received, paid, category) VALUES (?,?,?,?,?,?,?)",(day, month, year, description, received, paid, category))
+        user_conn.commit()
+        user_conn.close()
+        return redirect("/table")
+    else:
+        return render_template("table.html",message="Can't add transaction.")
+
 
 # @app.route ("/home")
 # @login_required

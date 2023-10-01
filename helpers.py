@@ -1,5 +1,5 @@
 import csv
-import datetime
+from datetime import datetime
 import pytz
 import subprocess
 import urllib
@@ -52,11 +52,40 @@ def create_db(path,id,username): #Enter path like this "../Database/user-databas
         return False
     
 def get_time_stamp():
-    from datetime import datetime
+    # from datetime import datetime
     # Get the current date and time
     current_datetime = datetime.now()
     # Format the datetime as a string in the desired format
     formatted_timestamp = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
     return formatted_timestamp
 
+def querry_table(path,id,username,table_name):
+    try:
+        conn = sqlite3.connect(f"{path}/{id}/{username}.db")
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM ? ",(table_name,))
+        rows = cur.fetchall()
+        conn.close()
+        return rows
+    except Exception as e:
+        return False
+
+
+
+
+def extract_date_info(date_string):
+    try:
+        # Parse the input string as a datetime object
+        date_obj = datetime.strptime(date_string, "%Y-%m-%d")
+
+        # Extract the date, year, and month separately
+        extracted_date = date_obj.strftime("%d")
+        extracted_year = date_obj.strftime("%Y")
+        extracted_month = date_obj.strftime("%m")
+
+        return extracted_date, extracted_year, extracted_month
+
+    except ValueError:
+        # Handle invalid date format
+        return None, None, None
 

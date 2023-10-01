@@ -23,6 +23,13 @@
     </head>
 
     <body>
+        {% if message %}
+            
+        <script>
+            alert("{{ message | safe }}");
+        </script>
+
+        {% endif %}
         
             {% if session["uid"] %}
             <aside class="side-navbar">
@@ -66,7 +73,7 @@
                   </ul>
                   <ul class="sidenav">
                     <li>
-                      <a href="/dashboard">
+                      <a href="/logout">
                         <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
                         <span class="title">Logout</span>
                       </a>
@@ -109,7 +116,10 @@
                   </div>
                 </nav>
                 <!-- End Navbar -->
+                
+
                 {% block main %}{% endblock %}
+                
               </main>
 
             <!-- <footer class="mb-5 small text-center">
