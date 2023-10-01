@@ -47,14 +47,14 @@ def index():
     if session.get("uid") is None:
         return redirect("/welcome")
     else:
-        return redirect("/home")
+        return redirect("/dashboard")
     
 
 @app.route("/welcome")
 def welcome():
     return render_template("welcome.html")
     
-@app.route("/home")
+@app.route("/dashboard")
 @login_required
 def home():
     return render_template("index.html")
@@ -100,7 +100,7 @@ def register():
         if create_db("../Database/user-databases",id, username):
             user_conn = sqlite3.connect(f"../Database/user-databases/{id}/{username}.db")
             u_cursor = user_conn.cursor()
-            u_cursor.execute("CREATE TABLE IF NOT EXISTS dashboard (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, date TEXT NOT NULL, description TEXT NOT NULL, received NUMERIC NOT NULL DEFAULT 0.00, paid NUMERIC NOT NULL DEFAULT 0.00, category TEXT NOT NULL)")
+            u_cursor.execute("CREATE TABLE IF NOT EXISTS transactions (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, day INTEGER NOT NULL, month INTEGER NOT NULL, year INTEGER NOT NULL, description TEXT NOT NULL, received NUMERIC NOT NULL DEFAULT 0.00, paid NUMERIC NOT NULL DEFAULT 0.00, category TEXT NOT NULL)")
             u_cursor.commit()
             user_conn.close()
         else:
@@ -150,6 +150,25 @@ def login():
     # User reached route via GET (as by clicking a link or via redirect)
     else:
         return render_template("login.html")
+
+
+@app.route("/logout")
+@login_required
+def logout():
+    """Log user out"""
+    # Forget any user_id
+    session.clear()
+    # Redirect user to login form
+    return redirect("/login")
+
+@app.route("/table", methods=["GET", "POST"])
+@login_required
+def table():
+    if request.method == "POST":
+        return redirect("/dashboard")
+    else:
+        return render_template("table.html")
+    
 
 # @app.route ("/home")
 # @login_required
