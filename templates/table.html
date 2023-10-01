@@ -138,15 +138,17 @@
                     <th class="col-lg-1">Delete</th>
                   <!-- </tr> -->
                 </thead>
+                {% for transaction in transactions %}
                 <tr>
-                  <th>Date</th>
-                  <th>Description</th>
-                  <th>Received</th>
-                  <th>Paid</th>
-                  <th>Category</th>
+                  <th>{{ transaction[1] }}-{{ transaction[2] }}-{{ transaction[3] }}</th>
+                  <th>{{ transaction[4] }}</th>
+                  <th>{{ transaction[5] }}</th>
+                  <th>{{ transaction[6] }}</th>
+                  <th>{{ transaction[7] }}</th>
                   <th><a href=""><i class="fa-regular fa-pen-to-square"></i></a></th>
                   <th><a href=""><i class="fa-regular fa-trash-can"></i></a></th>
                 </tr>
+                {% endfor %}
             </table>
             </div>
           </div>

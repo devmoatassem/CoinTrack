@@ -171,6 +171,7 @@ def table():
     else:
         
         transaction = querry_table("../Database/user-databases",session["uid"],session["username"],"transactions")
+        print(transaction)
         ledger_list = querry_table("../Database/user-databases",session["uid"],session["username"],"ledger")
         return render_template("table.html",transactions = transaction , ledger_list = ledger_list)
     
