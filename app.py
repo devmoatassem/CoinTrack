@@ -171,7 +171,7 @@ def table():
     else:
         
         transaction = querry_table("../Database/user-databases",session["uid"],session["username"],"transactions")
-        print(transaction)
+        # print(transaction)
         ledger_list = querry_table("../Database/user-databases",session["uid"],session["username"],"ledger")
         return render_template("table.html",transactions = transaction , ledger_list = ledger_list)
     
@@ -197,7 +197,7 @@ def addLedger():
 def addTransaction():
     if request.method == "POST":
         date = request.form.get("date")
-        print(date)
+        # print(date)
         day, year, month = extract_date_info(request.form.get("date"))
         description = request.form.get("description")
         received = request.form.get("received")
@@ -240,7 +240,7 @@ def editTransaction():
         received = request.form.get("received")
         paid = request.form.get("paid")
         category = request.form.get("category")
-        print(id,date,description,received,paid,category)
+        # print(id,date,description,received,paid,category)
         user_conn = sqlite3.connect(f"../Database/user-databases/{session['uid']}/{session['username']}.db")
         u_cursor = user_conn.cursor()
         u_cursor.execute("UPDATE transactions SET day = ?, month = ?, year = ?, description = ?, received = ?, paid = ?, category = ? WHERE id = ?",(day, month, year, description, received, paid, category, id))
