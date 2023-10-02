@@ -89,9 +89,7 @@ a{
 .btn{
     border-radius: 10px;
     min-width: 100px;
-    background: linear-gradient(145deg, #1e2125, #23282c);
-    box-shadow:  29px 29px 59px #15181a,
-             -29px -29px 59px #2d3238;
+    
 
 }
 .form-control:focus {

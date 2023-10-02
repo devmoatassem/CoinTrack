@@ -22,7 +22,8 @@ Dashboard
               <div class="numbers">
                 <p class="text-sm mb-0 text-capitalize font-weight-bold">Current Month Expenses</p>
                 <h5 class="font-weight-bolder mb-0">
-                  $53,000
+                  
+                  {{ monthly_totals[1] | pkr }}
                   
                 </h5>
               </div>
@@ -44,7 +45,7 @@ Dashboard
               <div class="numbers">
                 <p class="text-sm mb-0 text-capitalize font-weight-bold">Current Month Income</p>
                 <h5 class="font-weight-bolder mb-0">
-                  2,300
+                  {{ monthly_totals[0] | pkr }}
                   
                 </h5>
               </div>
@@ -66,7 +67,7 @@ Dashboard
               <div class="numbers">
                 <p class="text-sm mb-0 text-capitalize font-weight-bold">Current Month Balance</p>
                 <h5 class="font-weight-bolder mb-0">
-                  +3,462
+                  {{ monthly_totals[2] | pkr }}
                   
                 </h5>
               </div>

@@ -1,10 +1,9 @@
-import os
 import sqlite3
-from flask import Flask, flash, redirect, render_template, request, session
+from flask import Flask, redirect, render_template, request, session
 from flask_session import Session
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from helpers import login_required,  pkr,  get_ledger_totals, create_db, querry_table, extract_date_info
+from helpers import login_required,  pkr,  get_ledger_totals, create_db, querry_table, extract_date_info, current_month_totals
 
 # global variables
 ledger_list = []
@@ -61,8 +60,10 @@ def welcome():
 @app.route("/dashboard")
 @login_required
 def home():
+    print(session["name"])
+    monthly_totals = current_month_totals("../Database/user-databases",session["uid"],session["username"])
     ledger_list = querry_table("../Database/user-databases",session["uid"],session["username"],"ledger")
-    return render_template("index.html",ledger_list = ledger_list ,ledger_totals = ledger_totals)
+    return render_template("index.html",ledger_list = ledger_list ,ledger_totals = ledger_totals , monthly_totals = monthly_totals)
 
 
 
@@ -99,6 +100,7 @@ def register():
         # Remember which user has logged in
         session["uid"] = rows[0][0] #(id, Name, username, email, hash)
         session["username"] = username
+        session["name"] = rows[0][1]
 
         # Creating user-specific database
         id = session["uid"]
@@ -150,6 +152,7 @@ def login():
         # Remember which user has logged in
         session["uid"] = rows[0][0]
         session["username"] = username
+        session["name"] = rows[0][1]
         # Redirect user to home page
         return redirect("/")
 
@@ -220,9 +223,7 @@ def viewLedgerTotals():
         global ledger_totals
         ledger_totals_values =()
         ledger_totals_values = get_ledger_totals("../Database/user-databases",session["uid"],session["username"],ledger_name)
-        
         ledger_totals = ledger_totals_values[:3] + (ledger_name,)
-        
         return redirect("/dashboard")
     else:
         return render_template("index.html",message="Something wen't wrong! Can't view ledger totals.")
