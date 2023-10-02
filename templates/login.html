@@ -26,5 +26,33 @@
         
     </div>
   
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+    const loginform = document.getElementById("login-form");
+    loginform.addEventListener("submit", function (event) {
+        event.preventDefault(); // Prevent the form from submitting by default
+
+        try {
+            // Validate form fields here
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value; 
+
+            // Example validation: Checking if the name field is empty
+            if (username.trim() === "") {
+                throw new Error("Username cannot be empty");
+            }
+            else if (password.trim() === "") {
+                throw new Error("Password cannot be empty");
+            }
+
+            // If all validation passes, you can submit the form
+            loginform.submit();
+        } catch (error) {
+            alert(error.message);
+        }
+    });
+});
+
+    </script>
     
 {% endblock %}

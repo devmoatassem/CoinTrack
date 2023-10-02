@@ -140,13 +140,21 @@
                 </thead>
                 {% for transaction in transactions %}
                 <tr>
-                  <th>{{ transaction[1] }}-{{ transaction[2] }}-{{ transaction[3] }}</th>
-                  <th>{{ transaction[4] }}</th>
-                  <th>{{ transaction[5] }}</th>
-                  <th>{{ transaction[6] }}</th>
-                  <th>{{ transaction[7] }}</th>
-                  <th><a href=""><i class="fa-regular fa-pen-to-square"></i></a></th>
-                  <th><a href=""><i class="fa-regular fa-trash-can"></i></a></th>
+                  <td>{{ transaction[1] }}-{{ transaction[2] }}-{{ transaction[3] }}</th>
+                  <td>{{ transaction[4] }}</td>
+                  <td>{{ transaction[5] }}</td>
+                  <td>{{ transaction[6] }}</td>
+                  <td>{{ transaction[7] }}</td>
+                  <td>
+                      <button type="button" data-bs-toggle="modal" style="border: none;background-color: transparent;" data-bs-target="#edit_entry_Modal"  data-bs-whatever1="{{ transaction[0] }}" data-bs-whatever2="{{ transaction[4] }}" data-bs-whatever3="{{ transaction[5] }}" data-bs-whatever4="{{ transaction[6] }}"><i class="fa-regular fa-pen-to-square"></i></button>
+                  </td> 
+                  <td>
+                    <!-- <form action="/edit_transaction" method="post">
+                      <input name="tid" type="hidden" value="{{ transaction[0] }}"> -->
+                      <button onclick="populateFields('{{ transaction[0] }}, {{ transaction[4] }}, {{ transaction[5] }}, {{ transaction[6] }},  {{ transaction[7] }}')" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="border: none;background-color: transparent;"><i class="fa-regular fa-trash-can"></i></button>
+                    <!-- </form> -->
+                    
+                  </td>
                 </tr>
                 {% endfor %}
             </table>
@@ -156,8 +164,92 @@
     
   </div>
 </div>
+
+
+<!-- MODAL -->
+<div class="modal fade" id="edit_entry_Modal" tabindex="-1" aria-labelledby="edit_entry_ModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="edit_entry_ModalLabel">New message</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+        <form action="/edit_entry" method="post">
+          <div class="modal-body">
+          <div class="row g-3">
+            <div class="col-xl-4">
+              <label for="transaction_edit_date" class="col-form-label">Date:</label>
+              <input type="date" class="form-control" id="transaction_edit_date" name="date">
+            </div>
+            <div class="col-xl-8">
+              <label for="transaction_edit_description" class="col-form-label">Description:</label>
+              <input type="text" class="form-control" id="transaction_edit_description">
+            </div>
+          </div>
+          <div class="row g-3">
+              <div class="col-xl-4">
+                <label for="transaction_edit_received" class="col-form-label">Received:</label>
+               <input type="text" class="form-control" id="transaction_edit_received">
+              </div>
+              <div class="col-xl-4">
+                <label for="transaction_edit_paid" class="col-form-label">Paid:</label>
+                <input type="text" class="form-control" id="transaction_edit_paid">
+              </div>
+              <div class="col-xl-4">
+                <label for="transaction_edit_category" class="col-form-label">Ledger:</label>
+                <select class="form-select form-control" id="transaction_edit_category">
+                  <option selected disabled>Payment</option>
+                  <option value="1">One</option>
+                  <option value="2">Two</option>
+                  <option value="3">-Three</option>
+                </select>
+              </div>
+          </div>
+        </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-dark">Confirm Edit</button>
+          </div>
+        </form>
+      
+      
+    </div>
+  </div>
+</div>
+
+<script>
+  const edit_entry_Modal = document.getElementById('edit_entry_Modal');
+  if (edit_entry_Modal) {
+  edit_entry_Modal.addEventListener('show.bs.modal', event => {
+    // Button that triggered the modal
+    const button = event.relatedTarget;
+    
+    // Extract values from data-bs-* attributes
+    const tiD = button.getAttribute('data-bs-whatever1');
+    const description_edit = button.getAttribute('data-bs-whatever2');
+    const received_edit = button.getAttribute('data-bs-whatever3');
+    const paid_edit = button.getAttribute('data-bs-whatever4');
+    
+
+    // Update the modal's content.
+    const modalTitle = edit_entry_Modal.querySelector('.modal-title');
+    const modalBodyInput1 = edit_entry_Modal.querySelector('#transaction_edit_description');
+    const modalBodyInput2 = edit_entry_Modal.querySelector('#transaction_edit_received');
+    const modalBodyInput3 = edit_entry_Modal.querySelector('#transaction_edit_paid');
+    // const modalBodyInput4 = edit_entry_Modal.querySelector('#transaction_edit_category');
+    // const modalBodyInput5 = edit_entry_Modal.querySelector('#recipient-name-5');
+
+    modalTitle.textContent = `Edit transction : TID = ${tiD}`;
+    modalBodyInput1.value = description_edit;
+    modalBodyInput2.value = received_edit;
+    modalBodyInput3.value = paid_edit;
+    
+    
+  });
+}
+
+
+</script>
+
 {% endblock %}
-
-
-
-</html>

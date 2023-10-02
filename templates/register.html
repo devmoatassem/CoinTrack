@@ -41,5 +41,51 @@
     
     
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+    const regform = document.getElementById("registration-form");
+
+    regform.addEventListener("submit", function (event) {
+        event.preventDefault(); // Prevent the form from submitting by default
+
+        try {
+            // Validate form fields here
+            const name = document.getElementById("name").value;
+            const username = document.getElementById("username").value;
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value; 
+            const confirmation = document.getElementById("confirmation").value;
+
+            // Example validation: Checking if the name field is empty
+            if (name.trim() === "") {
+                throw new Error("Full Name cannot be empty");
+            }
+            else if (username.trim() === "") {
+                throw new Error("Username cannot be empty");
+            }   
+            else if (email.trim() === "") {
+                throw new Error("Email cannot be empty");
+            }
+            else if (password.trim() === "") {
+                throw new Error("Password cannot be empty");
+            }
+            else if (confirmation.trim() === "") {
+                throw new Error("Confirmation cannot be empty");
+            }
+            else if (password !== confirmation) {
+                throw new Error("Passwords do not match");
+            }
+
+            // If all validation passes, you can submit the form
+            regform.submit();
+        } catch (error) {
+            alert(error.message);
+        }
+    });
+});
+
+</script>
     
 {% endblock %}

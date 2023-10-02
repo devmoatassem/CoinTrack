@@ -62,11 +62,8 @@ def get_time_stamp():
 def querry_table(path,id,username,table_name):
     try:
         conn = sqlite3.connect(f"{path}/{id}/{username}.db")
-        print("1")
         cur = conn.cursor()
-        
         cur.execute(f"SELECT * FROM {table_name}")
-        print("2")
         rows = cur.fetchall()
         conn.close()
         
