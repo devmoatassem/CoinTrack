@@ -212,6 +212,43 @@ def addTransaction():
     else:
         return render_template("table.html",message="Can't add transaction.")
 
+@app.route("/deleteTransaction", methods=["GET", "POST"])
+@login_required
+def deleteTransaction():
+    if request.method == "POST":
+        id = request.form.get("tid")
+        user_conn = sqlite3.connect(f"../Database/user-databases/{session['uid']}/{session['username']}.db")
+        u_cursor = user_conn.cursor()
+        u_cursor.execute("DELETE FROM transactions WHERE id = ?",(id,))
+        user_conn.commit()
+        user_conn.close()
+        return redirect("/table")
+    else:
+        return render_template("table.html",message="Can't delete transaction.")
+    
+
+
+@app.route("/editTransaction", methods=["GET", "POST"])
+@login_required
+def editTransaction():
+    print("Edit transaction called")
+    if request.method == "POST":
+        id = request.form.get("tid")
+        date = request.form.get("date")
+        day, year, month = extract_date_info(request.form.get("date"))
+        description = request.form.get("description")
+        received = request.form.get("received")
+        paid = request.form.get("paid")
+        category = request.form.get("category")
+        print(id,date,description,received,paid,category)
+        user_conn = sqlite3.connect(f"../Database/user-databases/{session['uid']}/{session['username']}.db")
+        u_cursor = user_conn.cursor()
+        u_cursor.execute("UPDATE transactions SET day = ?, month = ?, year = ?, description = ?, received = ?, paid = ?, category = ? WHERE id = ?",(day, month, year, description, received, paid, category, id))
+        user_conn.commit()
+        user_conn.close()
+        return redirect("/table")
+    else:
+        return render_template("table.html",message="Something wen't wrong! Can't edit transaction.")
 
 # @app.route ("/home")
 # @login_required
