@@ -1,9 +1,4 @@
-import csv
 from datetime import datetime
-import pytz
-import subprocess
-import urllib
-import uuid
 import os
 import sqlite3
 from flask import redirect, render_template, session
@@ -91,3 +86,21 @@ def extract_date_info(date_string):
         # Handle invalid date format
         return None, None, None
 
+def get_ledger_totals(path,id,username,ledger_name):
+    try:
+        conn = sqlite3.connect(f"{path}/{id}/{username}.db")
+        cur = conn.cursor()
+        cur.execute(f"SELECT received, paid FROM transactions WHERE category = ?",(ledger_name,))
+        rows = cur.fetchall()
+        conn.close()
+        received = 0
+        paid = 0
+        for row in rows:
+            received += row[0]
+            paid += row[1]
+        total = received - paid
+        return received,paid,total
+    except Exception as e:
+        print(e)
+        return False
+    

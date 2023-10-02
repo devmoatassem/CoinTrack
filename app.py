@@ -4,7 +4,11 @@ from flask import Flask, flash, redirect, render_template, request, session
 from flask_session import Session
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from helpers import login_required,  pkr,  get_time_stamp, create_db, querry_table, extract_date_info
+from helpers import login_required,  pkr,  get_ledger_totals, create_db, querry_table, extract_date_info
+
+# global variables
+ledger_list = []
+ledger_totals = ()
 
 
 # Configure application
@@ -57,7 +61,8 @@ def welcome():
 @app.route("/dashboard")
 @login_required
 def home():
-    return render_template("index.html")
+    ledger_list = querry_table("../Database/user-databases",session["uid"],session["username"],"ledger")
+    return render_template("index.html",ledger_list = ledger_list ,ledger_totals = ledger_totals)
 
 
 
@@ -187,10 +192,40 @@ def addLedger():
         u_cursor.execute("INSERT INTO ledger (name) VALUES (?)",(ledger_name,))
         user_conn.commit()
         user_conn.close()
-        return redirect("/table")
+        return redirect("/dashboard")
     else:
-        return render_template("table.html",message="Can't add ledger.")
+        return render_template("index.html",message="Something wen't wrong! Can't add ledger.")
     
+
+@app.route("/deleteLedger", methods=["GET", "POST"])
+@login_required
+def deleteLedger():
+    if request.method == "POST":
+        id = request.form.get("lid")
+        user_conn = sqlite3.connect(f"../Database/user-databases/{session['uid']}/{session['username']}.db")
+        u_cursor = user_conn.cursor()
+        u_cursor.execute("DELETE FROM ledger WHERE id = ?",(id,))
+        user_conn.commit()
+        user_conn.close()
+        return redirect("/dashboard")
+    else:
+        return render_template("index.html",message="Something wen't wrong! Can't delete ledger.")
+
+@app.route("/viewLedgerTotals", methods=["GET", "POST"])
+@login_required
+def viewLedgerTotals():
+    if request.method == "POST":
+        
+        ledger_name = request.form.get("ledger_name")
+        global ledger_totals
+        ledger_totals_values =()
+        ledger_totals_values = get_ledger_totals("../Database/user-databases",session["uid"],session["username"],ledger_name)
+        
+        ledger_totals = ledger_totals_values[:3] + (ledger_name,)
+        
+        return redirect("/dashboard")
+    else:
+        return render_template("index.html",message="Something wen't wrong! Can't view ledger totals.")
 
 @app.route("/addTransaction", methods=["GET", "POST"])
 @login_required
@@ -249,6 +284,12 @@ def editTransaction():
         return redirect("/table")
     else:
         return render_template("table.html",message="Something wen't wrong! Can't edit transaction.")
+
+
+
+    
+
+
 
 # @app.route ("/home")
 # @login_required
