@@ -3,7 +3,7 @@ from flask import Flask, redirect, render_template, request, session
 from flask_session import Session
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from helpers import login_required,  pkr,  get_ledger_totals, create_db, querry_table, extract_date_info, current_month_totals,order_data_for_chart
+from helpers import delete_ledger_data, login_required,  pkr,  get_ledger_totals, create_db, querry_table, extract_date_info, current_month_totals,order_data_for_chart
 
 # global variables
 ledger_list = []
@@ -206,12 +206,13 @@ def addLedger():
 @login_required
 def deleteLedger():
     if request.method == "POST":
-        id = request.form.get("lid")
+        Ledgname = request.form.get("ledger_name")
         user_conn = sqlite3.connect(f"../Database/user-databases/{session['uid']}/{session['username']}.db")
         u_cursor = user_conn.cursor()
-        u_cursor.execute("DELETE FROM ledger WHERE id = ?",(id,))
+        u_cursor.execute("DELETE FROM ledger WHERE name = ?",(Ledgname,))
         user_conn.commit()
         user_conn.close()
+        delete_ledger_data("../Database/user-databases",session["uid"],session["username"],Ledgname) #Delete Ledger Data From Transactions Table
         return redirect("/dashboard")
     else:
         return render_template("index.html",message="Something wen't wrong! Can't delete ledger.")

@@ -139,3 +139,14 @@ def order_data_for_chart(path,id,username):
     # print(expenses,"----",incomings)
     return incomings,expenses
     
+def delete_ledger_data(path,id,username,ledger_name):
+    try:
+        conn = sqlite3.connect(f"{path}/{id}/{username}.db")
+        cur = conn.cursor()
+        cur.execute(f"DELETE FROM transactions WHERE category = ?",(ledger_name,))
+        conn.commit()
+        conn.close()
+        return True
+    except Exception as e:
+        
+        return False
