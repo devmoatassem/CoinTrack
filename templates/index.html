@@ -88,14 +88,14 @@ Dashboard
           <div class="card z-index-2 blured-background">
             <div class="card-header pb-0">
               <h6>Annual overview</h6>
-              <p class="text-sm">
-                <!-- <i class="fa fa-arrow-up text-success"></i> -->
+              <!-- <p class="text-sm">
+                <i class="fa fa-arrow-up text-success"></i>
                 <span class="font-weight-bold">4% more</span>
-              </p>
+              </p> -->
             </div>
             <div class="card-body p-3">
               <div class="chart">
-                <canvas id="chart-line" class="chart-canvas" height="300"></canvas>
+                <canvas id="chart-line" class="chart-canvas" height="350" width="550"></canvas>
               </div>
             </div>
           </div>
@@ -168,8 +168,46 @@ Dashboard
     </div>
   </div>
 </div>
+
+<!-- Chart Js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+  var chart = document.getElementById('chart-line').getContext('2d');
+  var lineChart = new Chart(chart, {
+    type: 'line',
+    data: {
+      labels: {{ chart_data[0] | safe }},
+      datasets: [{
+        label: 'Income',
+        data: {{ chart_data[1] | safe }},
+        // fill:true,
+        backgroundColor: [
+          'rgba(75, 192, 192, 1)'
+        ],
+        borderColor: [
+          'rgb(75, 192, 192)'
+        ],
+        borderWidth: 2,
+        lineTension: 0.3,
+      },
+      {
+        label: 'Expenses',
+        data: {{ chart_data[2] | safe }},
+        // fill:true,
+        backgroundColor: [
+          'rgba(50, 14, 192, 10)'
+        ],
+        borderColor: [
+          'rgb(50, 14, 192)'
+        ],
+        borderWidth: 2,
+        lineTension: 0.3,
+      }
+    ]
+    },
+    options: {
+      responsive: false,
+    }
+  });
+</script>
 {% endblock %}
-
-
-
-</html>

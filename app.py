@@ -3,7 +3,7 @@ from flask import Flask, redirect, render_template, request, session
 from flask_session import Session
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from helpers import login_required,  pkr,  get_ledger_totals, create_db, querry_table, extract_date_info, current_month_totals
+from helpers import login_required,  pkr,  get_ledger_totals, create_db, querry_table, extract_date_info, current_month_totals,order_data_for_chart
 
 # global variables
 ledger_list = []
@@ -60,10 +60,12 @@ def welcome():
 @app.route("/dashboard")
 @login_required
 def home():
-    print(session["name"])
+    months = ["January","February","March","April","May","June","July","August","September","October","November","December"]
+    income,expense = order_data_for_chart("../Database/user-databases",session["uid"],session["username"])
+    chart_data = [months,income,expense]
     monthly_totals = current_month_totals("../Database/user-databases",session["uid"],session["username"])
     ledger_list = querry_table("../Database/user-databases",session["uid"],session["username"],"ledger")
-    return render_template("index.html",ledger_list = ledger_list ,ledger_totals = ledger_totals , monthly_totals = monthly_totals)
+    return render_template("index.html",ledger_list = ledger_list ,ledger_totals = ledger_totals , monthly_totals = monthly_totals, chart_data= chart_data)
 
 
 

@@ -104,10 +104,11 @@ def get_ledger_totals(path,id,username,ledger_name):
     except Exception as e:
         print(e)
         return False
+# Get Current month
+current_date = datetime.now()
+cmonth = current_date.month
+def current_month_totals(path,id,username,month=cmonth):
     
-def current_month_totals(path,id,username):
-    current_date = datetime.now()
-    month = current_date.month
     try:
         conn = sqlite3.connect(f"{path}/{id}/{username}.db")
         cur = conn.cursor()
@@ -124,3 +125,17 @@ def current_month_totals(path,id,username):
     except Exception as e:
         print(e)
         return False
+    
+
+
+def order_data_for_chart(path,id,username):
+    expenses = []
+    incomings = []
+    
+    for i in range(1,13):
+        monthly_data = current_month_totals(path,id,username,i)
+        incomings.append(monthly_data[0])
+        expenses.append(monthly_data[1])
+    # print(expenses,"----",incomings)
+    return incomings,expenses
+    
