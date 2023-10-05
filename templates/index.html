@@ -110,7 +110,7 @@ Dashboard
           </p>
         </div>
         <div class="card-body p-3">
-          <form class="row g-3" action="/addLedger" method="post">
+          <form class="row g-3" action="/addLedger" method="post" id="Ledger-controls">
             <div class="col-xl-7">
               <input type="text" class="form-control" id="ledgerAdd" name="ledger_name" placeholder="Add New Ledger">
             </div>
@@ -118,9 +118,11 @@ Dashboard
               <button type="submit" class="btn btn-dark mb-3">Add Ledger</button>
             </div>
           </form>
-          <form class="row g-3" action="/viewLedgerTotals" method="post">
+
+         
+          <form class="row g-3" action="/viewLedgerTotals" method="post" id="Ledger-controls">
             <div class="col-xl-7">
-              <select class="form-select form-control" name="ledger_name">
+              <select class="form-select form-control" name="ledger_name" id="ledger_select">
                 <option selected disabled>Select to View</option>
                 {% for ledger in ledger_list %}
                 <option value="{{ ledger[1] }}">{{ ledger[1] }}</option>
@@ -147,9 +149,9 @@ Dashboard
             </tr>
             {% endif %}
           </table>
-          <form class="row g-3" action="/deleteLedger" method="post">
+          <form class="row g-3" action="/deleteLedger" method="post" id="Ledger-controls" >
             <div class="col-xl-7">
-              <select class="form-select form-control" name="ledger_name">
+              <select class="form-select form-control" name="ledger_name" id="ledger_select">
                 <option selected disabled>Select to delete</option>
                 {% for ledger in ledger_list %}
                 <option value="{{ ledger[1] }}">{{ ledger[1] }}</option>
@@ -162,12 +164,41 @@ Dashboard
             </div>
           </form>
           
+          
         </div>
         
       </div>
     </div>
   </div>
 </div>
+
+
+
+<!-- Add ledger Form validation -->
+<script>
+            // form validation
+              document.addEventListener("DOMContentLoaded", function () {
+                const addform = document.getElementById("Ledger-controls")
+              
+                addform.addEventListener("submit", function (event) {
+                  event.preventDefault(); // Prevent the form from submitting by default
+
+                  try {
+                      // Validate form fields here
+                      const add = document.getElementById("ledgerAdd").value;
+                      // Example validation: Checking if the name field is empty
+                      if (add.trim() === "") {
+                          throw new Error("Field cannot be empty");
+                      }
+                      // If all validation passes, you can submit the form
+                      addform.submit();
+                  } catch (error) {
+                      alert(error.message);
+                  }
+              });
+          });
+</script>
+
 
 <!-- Chart Js CDN -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>

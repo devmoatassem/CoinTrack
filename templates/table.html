@@ -17,7 +17,7 @@ Table
     <div class="mb-xl-0 mb-4">
       <div class="card blured-background">
         <!-- <form action="/addent"> -->
-          <form action="/addTransaction" method="post"> 
+          <form action="/addTransaction" method="post" id="addTransaction"> 
             <div class="row g-3">
               <div class="col-xl">
                 <input type="date" class="form-control" id="transactionAdd" name="date">
@@ -53,7 +53,7 @@ Table
     <div class="mb-xl-0 mb-4">
       <div class="collapse " id="collapseExample">
         <div class="card">
-          <form>
+          <form  id="filter-form" method="post">
             <div class="row g-3">
               <div class="col">
                 <select class="form-select form-control">
@@ -105,6 +105,10 @@ Table
               </div>
             </div>
           </form>
+          <script>
+              // form validation 
+              
+          </script>
         </div>
       </div>
       

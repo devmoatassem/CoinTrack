@@ -1,5 +1,5 @@
 import sqlite3
-from flask import Flask, redirect, render_template, request, session
+from flask import Flask, redirect, render_template, request, session, url_for
 from flask_session import Session
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -59,13 +59,14 @@ def welcome():
     
 @app.route("/dashboard")
 @login_required
-def home():
+def dashboard():
+    message = request.args.get("message")
     months = ["January","February","March","April","May","June","July","August","September","October","November","December"]
     income,expense = order_data_for_chart("../Database/user-databases",session["uid"],session["username"])
     chart_data = [months,income,expense]
     monthly_totals = current_month_totals("../Database/user-databases",session["uid"],session["username"])
     ledger_list = querry_table("../Database/user-databases",session["uid"],session["username"],"ledger")
-    return render_template("index.html",ledger_list = ledger_list ,ledger_totals = ledger_totals , monthly_totals = monthly_totals, chart_data= chart_data)
+    return render_template("index.html",ledger_list = ledger_list ,ledger_totals = ledger_totals , monthly_totals = monthly_totals, chart_data= chart_data, message=message)
 
 
 
@@ -197,9 +198,9 @@ def addLedger():
         u_cursor.execute("INSERT INTO ledger (name) VALUES (?)",(ledger_name,))
         user_conn.commit()
         user_conn.close()
-        return redirect("/dashboard")
+        return redirect(url_for("dashboard"))
     else:
-        return render_template("index.html",message="Something wen't wrong! Can't add ledger.")
+        return redirect(url_for("dashboard",message="Something wen't wrong! Can't add ledger."))
     
 
 @app.route("/deleteLedger", methods=["GET", "POST"])
@@ -207,15 +208,19 @@ def addLedger():
 def deleteLedger():
     if request.method == "POST":
         Ledgname = request.form.get("ledger_name")
+        
+        if Ledgname == None:
+            return redirect(url_for("dashboard",message="Something wen't wrong! Must Select a ledger to delete."))
+        
         user_conn = sqlite3.connect(f"../Database/user-databases/{session['uid']}/{session['username']}.db")
         u_cursor = user_conn.cursor()
         u_cursor.execute("DELETE FROM ledger WHERE name = ?",(Ledgname,))
         user_conn.commit()
         user_conn.close()
         delete_ledger_data("../Database/user-databases",session["uid"],session["username"],Ledgname) #Delete Ledger Data From Transactions Table
-        return redirect("/dashboard")
+        return redirect(url_for('dashboard'))
     else:
-        return render_template("index.html",message="Something wen't wrong! Can't delete ledger.")
+        return redirect(url_for("dashboard",message="Something wen't wrong! Can't delete ledger.")) 
 
 @app.route("/viewLedgerTotals", methods=["GET", "POST"])
 @login_required
@@ -223,13 +228,16 @@ def viewLedgerTotals():
     if request.method == "POST":
         
         ledger_name = request.form.get("ledger_name")
+        if ledger_name == None:
+            return redirect(url_for("dashboard",message="Something wen't wrong! Must Select a ledger to view."))
+        
         global ledger_totals
         ledger_totals_values =()
         ledger_totals_values = get_ledger_totals("../Database/user-databases",session["uid"],session["username"],ledger_name)
         ledger_totals = ledger_totals_values[:3] + (ledger_name,)
-        return redirect("/dashboard")
+        return redirect(url_for("dashboard"))
     else:
-        return render_template("index.html",message="Something wen't wrong! Can't view ledger totals.")
+        return redirect(url_for("dashboard",message="Something wen't wrong! Can't view ledger.")) 
 
 @app.route("/addTransaction", methods=["GET", "POST"])
 @login_required
@@ -247,9 +255,9 @@ def addTransaction():
         u_cursor.execute("INSERT INTO transactions (day, month, year, description, received, paid, category) VALUES (?,?,?,?,?,?,?)",(day, month, year, description, received, paid, category))
         user_conn.commit()
         user_conn.close()
-        return redirect("/table")
+        return redirect(url_for("table"))
     else:
-        return render_template("table.html",message="Can't add transaction.")
+        return redirect(url_for("table",message="Something wen't wrong! Can't add transaction."))
 
 @app.route("/deleteTransaction", methods=["GET", "POST"])
 @login_required
@@ -261,9 +269,9 @@ def deleteTransaction():
         u_cursor.execute("DELETE FROM transactions WHERE id = ?",(id,))
         user_conn.commit()
         user_conn.close()
-        return redirect("/table")
+        return redirect(url_for("table"))
     else:
-        return render_template("table.html",message="Can't delete transaction.")
+        return redirect(url_for("table",message="Something wen't wrong! Can't delete transaction."))
     
 
 
@@ -285,9 +293,9 @@ def editTransaction():
         u_cursor.execute("UPDATE transactions SET day = ?, month = ?, year = ?, description = ?, received = ?, paid = ?, category = ? WHERE id = ?",(day, month, year, description, received, paid, category, id))
         user_conn.commit()
         user_conn.close()
-        return redirect("/table")
+        return redirect(url_for("table"))
     else:
-        return render_template("table.html",message="Something wen't wrong! Can't edit transaction.")
+        return redirect(url_for("table",message="Something wen't wrong! Can't edit transaction."))
 
 
 
