@@ -19,7 +19,7 @@ Table
         <!-- <form action="/addent"> -->
           <form action="/addTransaction" method="post" id="addTransaction"> 
             <div class="row g-3">
-              <div class="col-xl">
+              <div class="col">
                 <input type="date" class="form-control" id="transactionAdd" name="date">
               </div>
               <div class="col-xl-3">
@@ -55,39 +55,27 @@ Table
         <div class="card">
           <form  id="filter-form" method="post">
             <div class="row g-3">
-              <div class="col">
-                <select class="form-select form-control">
-                  <option selected disabled>Month</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
-                </select>
-                
+              <div class="col-lg-3">
+                <div class="mb-3 row">
+                  <label for="startDate" class="col-sm-3 col-form-label">From</label>
+                  <div class="col-sm-9">
+                    <input type="date" class="form-control" id="filter" name="startDate">
+                  </div>
+                </div>
               </div>
-              <div class="col">
-                <select class="form-select form-control">
-                  <option selected disabled>Day</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
-                </select>
-                
-              </div>
-              <div class="col">
-                <select class="form-select form-control">
-                  <option selected disabled>Year</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
-                </select>
-                
+              <div class="col-lg-3">
+                <div class="mb-3 row">
+                  <label for="endDate" class="col-sm-2 col-form-label">To</label>
+                  <div class="col-sm-9">
+                    <input type="date" class="form-control" id="filter" name="endDate">
+                  </div>
+                </div>
               </div>
               <div class="col">
                 <select class="form-select form-control">
                   <option selected disabled>Payment</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
+                  <option value="paid">Paid</option>
+                  <option value="received">Received</option>
                 </select>
                 
               </div>
