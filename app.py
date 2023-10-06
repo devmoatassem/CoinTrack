@@ -3,7 +3,7 @@ from flask import Flask, redirect, render_template, request, session, url_for
 from flask_session import Session
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from helpers import delete_ledger_data, login_required,  pkr,  get_ledger_totals, create_db, querry_table, extract_date_info, current_month_totals,order_data_for_chart
+from helpers import delete_ledger_data, login_required,  pkr,  get_ledger_totals, create_db, querry_table, extract_date_info, current_month_totals,order_data_for_chart,filterTransaction
 
 # global variables
 ledger_list = []
@@ -180,11 +180,44 @@ def table():
     if request.method == "POST":
         return render_template("table.html")
     else:
+        transaction = []
+        filter = False
+        message = request.args.get("message")
+        month = request.args.get("month")
+        year = request.args.get("year")
+        paymentType = request.args.get("paymentType")
+        ledgerName = request.args.get("ledgerName")
+        if month != None or year != None or paymentType != None or ledgerName != None:
+            if month == None:
+                month = "all"
+            if year == None:
+                year = "all"
+            if paymentType == None:
+                paymentType = "all"
+            if ledgerName == None:
+                ledgerName = "all"
+            filter = True
+            transaction = filterTransaction("../Database/user-databases",session["uid"],session["username"],month,year,paymentType,ledgerName)
+           
         
-        transaction = querry_table("../Database/user-databases",session["uid"],session["username"],"transactions")
+        
+        else:
+            transaction = querry_table("../Database/user-databases",session["uid"],session["username"],"transactions")
+            print(transaction)
+        # Find unique years and month list from transactions
+        calcYandM = querry_table("../Database/user-databases",session["uid"],session["username"],"transactions")
+        yearsList=[]
+        monthList=[]
+        for t in calcYandM:
+            if t[3] not in yearsList:
+                yearsList.append(t[3])
+            if t[2] not in monthList:
+                monthList.append(t[2])
+        transaction.reverse()
         # print(transaction)
+
         ledger_list = querry_table("../Database/user-databases",session["uid"],session["username"],"ledger")
-        return render_template("table.html",transactions = transaction , ledger_list = ledger_list)
+        return render_template("table.html",transactions = transaction , ledger_list = ledger_list, years=yearsList, months=monthList, message=message,filter=filter)
     
 
 
@@ -298,7 +331,17 @@ def editTransaction():
         return redirect(url_for("table",message="Something wen't wrong! Can't edit transaction."))
 
 
-
+@app.route("/applyFilter", methods=["GET", "POST"])
+@login_required
+def applyFilter():
+    if request.method == "POST":
+        month = request.form.get("month")
+        year = request.form.get("year")
+        paymentType = request.form.get("paymentType")
+        ledgerName = request.form.get("ledgerName")
+        return redirect(url_for("table",month=month,year=year,paymentType=paymentType,ledgerName=ledgerName))
+    else:
+        return redirect(url_for("table",message="Something wen't wrong! Can't apply filter."))
     
 
 

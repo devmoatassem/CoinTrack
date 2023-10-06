@@ -150,3 +150,29 @@ def delete_ledger_data(path,id,username,ledger_name):
     except Exception as e:
         
         return False
+    
+def filterTransaction(path,id,username, month,year, trasactionType, ledger_name):
+    try:
+        conn = sqlite3.connect(f"{path}/{id}/{username}.db")
+        cur = conn.cursor()
+        sql_query = "SELECT * FROM transactions"
+        if trasactionType == "received":
+            sql_query += " WHERE received > 0"
+        elif trasactionType == "paid":
+            sql_query += " WHERE paid > 0"
+        else:
+            sql_query += " WHERE (received > 0 OR paid > 0)"
+        if ledger_name != "all" and ledger_name != None:
+            sql_query += f" AND category = '{ledger_name}'"
+        if month != "all" and month != None:
+            sql_query += f" AND month = '{month}'"
+        if year != "all" and year != None:
+            sql_query += f" AND year = '{year}'"
+        
+        cur.execute(sql_query)
+        rows = cur.fetchall()
+        conn.close()
+        return rows
+    except Exception as e:
+        print(e)
+        return False
