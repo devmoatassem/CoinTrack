@@ -359,6 +359,9 @@ def search():
         print(results)
         return render_template("API-Templates/search.html",transactions=results)
 
+@app.route("/contact")
+def contact():
+    return render_template("contact.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
