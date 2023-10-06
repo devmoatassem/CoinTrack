@@ -278,11 +278,14 @@ def addTransaction():
     if request.method == "POST":
         date = request.form.get("date")
         # print(date)
-        day, year, month = extract_date_info(request.form.get("date"))
+        day, year, month = extract_date_info(date)
         description = request.form.get("description")
         received = request.form.get("received")
         paid = request.form.get("paid")
         category = request.form.get("category")
+        if category == None or date == None or description == None or received == None or paid == None:
+            return redirect(url_for("table",message="Something wen't wrong! Must fill all fields."))
+            
         user_conn = sqlite3.connect(f"../Database/user-databases/{session['uid']}/{session['username']}.db")
         u_cursor = user_conn.cursor()
         u_cursor.execute("INSERT INTO transactions (day, month, year, description, received, paid, category) VALUES (?,?,?,?,?,?,?)",(day, month, year, description, received, paid, category))

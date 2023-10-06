@@ -26,13 +26,13 @@ Table
                 <input type="text" class="form-control" id="transactionAdd" placeholder="Description" name="description">
               </div>
               <div class="col">
-                <input type="text" class="form-control" id="transactionAdd" placeholder="Received" name="received">
+                <input type="number" class="form-control" id="transactionAdd" placeholder="Received" name="received">
               </div>
               <div class="col">
-                <input type="text" class="form-control" id="transactionAdd" placeholder="Paid" name="paid">
+                <input type="number" class="form-control" id="transactionAdd" placeholder="Paid" name="paid">
               </div>
               <div class="col-xl">
-                <select class="form-select form-control" name="category">
+                <select class="form-select form-control" name="category" id="categorySelect">
                   <option selected disabled>Select Ledger</option>
                   {% for ledger in ledger_list %}
                   <option value="{{ ledger[1] }}">{{ ledger[1] }}</option>
