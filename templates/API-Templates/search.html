@@ -1,0 +1,20 @@
+{% for transaction in transactions %}
+<tr>
+    <td>{{ transaction[1] }}-{{ transaction[2] }}-{{ transaction[3] }}</th>
+    <td>{{ transaction[4] }}</td>
+    <td>{{ transaction[5] }}</td>
+    <td>{{ transaction[6] }}</td>
+    <td>{{ transaction[7] }}</td>
+    <td>
+        <button type="button" data-bs-toggle="modal" style="border: none;background-color: transparent;" data-bs-target="#edit_entry_Modal"  data-bs-whatever1="{{ transaction[0] }}" data-bs-whatever2="{{ transaction[4] }}" data-bs-whatever3="{{ transaction[5] }}" data-bs-whatever4="{{ transaction[6] }}"><i class="fa-regular fa-pen-to-square"></i></button>
+    </td> 
+    <td>
+    <form action="/deleteTransaction" method="post">
+        <input name="tid" type="hidden" id="tid" value="{{ transaction[0] }}">
+        <button type="submit" style="border: none;background-color: transparent;"><i class="fa-regular fa-trash-can"></i></button>
+    </form>
+    
+    </td>
+</tr>
+{% endfor %}
+

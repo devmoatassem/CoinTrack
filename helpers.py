@@ -176,3 +176,16 @@ def filterTransaction(path,id,username, month,year, trasactionType, ledger_name)
     except Exception as e:
         print(e)
         return False
+    
+def searchDB(path,id,username,search):
+    try:
+        conn = sqlite3.connect(f"{path}/{id}/{username}.db")
+        cur = conn.cursor()
+        sql_query = f"SELECT * FROM transactions WHERE description LIKE '%{search}%'"
+        cur.execute(sql_query)
+        rows = cur.fetchall()
+        conn.close()
+        return rows
+    except Exception as e:
+        print(e)
+        return False
