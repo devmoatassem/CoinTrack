@@ -45,7 +45,7 @@ This page contains contact information for obtaining assistance with deployment 
 - https://bennettfeely.com/clippy/  create clipping masks of different shapes in CSS (particularly useful for using an image putting an overlay of some text over it)
 - https://neumorphism.io/#e0e0e0 CSS codes for shaodows, edges etc
 - https://ui.glass/generator/  & https://css.glass/ Glass like background effect generator
-- https://www.blobmaker.app/ make different shapes using CSS, different blobs
+- https://www.blobmaker.app/ make different svg shapes, different blobs
 - https://products.ls.graphics/mesh-gradients/ Generate custom Mesh Gradients with custom color and custom patterns
 - https://animate.style/ Animate CSS
 - https://fontawesome.com/ For ICONS
