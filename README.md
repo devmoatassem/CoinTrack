@@ -1,12 +1,12 @@
 # CoinTrack
-#### Video Demo:  <https://youtu.be/SuzuRXMSvMs>
-### Description:
+### Video Demo:  <https://youtu.be/SuzuRXMSvMs>
+## Description:
 A personal finance tracker built using Python-Flask, HTML, CSS, Bootstrap, and SQLite as the database consists of two main pages. Let's discuss each one in detail.
-#### Welcome Page
+### Welcome Page
 The personal finance tracker is simply designed with a project tagline and two buttons. Users will be redirected to the welcome page if they're not signed in; otherwise, the default URL will open the dashboard.
 
 On the welcome page, users can navigate to the sign-in and login pages, which are designed with consistency in mind to maintain a unified design theme.
-#### Dashboard Page
+### Dashboard Page
 In the dashboard, there are several sections:
 
 1. "Current Month Expenses," "Income," and "Balance" sections.
@@ -14,7 +14,7 @@ In the dashboard, there are several sections:
 3. A ledger control feature that allows users to add, remove, and view totals for a particular ledger.
 4. At the top header, users can see the current page name and date.
 5. There's a side navigation pane where the user's name is displayed at the top. In the center, users can navigate to different pages, and at the bottom, they can sign out.
-#### Table Page
+### Table Page
 The table page offers multiple options, which we can explore one by one:
 
 1. Users can add transactions using a form that takes input for date, income, expenses, ledger, and description. The "Add" button calls a special route in the Flask backend, which utilizes the Python sqlite3 library to INSERT the transaction into the transaction table.
@@ -31,10 +31,10 @@ The table page offers multiple options, which we can explore one by one:
 
 These options provide users with comprehensive control and flexibility in managing and viewing their financial transactions.
 
-#### About Page
+### About Page
 This page includes a brief introduction and outlines my motivation behind the project.
 
-#### Contact Page
+### Contact Page
 This page contains contact information for obtaining assistance with deployment issues and for businesses interested in implementing the project with custom modifications.
 
  # Credits
